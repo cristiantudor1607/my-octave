@@ -1,0 +1,177 @@
+Copyright Tudor Cristian-Andrei 311CAa 2022-2023
+
+Programarea Calculatoarelor si Limbaje de Programare - Tema 2
+
+Simulator de Octave
+
+	Aceasta problema este impartita in mai multe task-uri asa ca voi detalia
+fiecare task in parte.
+	Pentru task-ul 'L', am considerat un vector de matrici alocat dinamic,
+initial alocat cu un element. Am mai luat de altfel inca 3 vectori, pentru a
+retine numarul de linii, numarul de coloane, si suma tuturor elementelor
+fiecarei matrici din vector. Astfel, pe pozitia i din vectorul de matrici se
+va gasi o matrice, iar la aceeasi pozitie i, se va gasi intr-un vector numarul
+ei de linii, in altul numarul ei de coloane, iar in altul suma tuturor
+elementelor. La fiecare introducere a literei L si a 2 numere se apeleaza
+functia resize_array care realoca vectorul cu cate un element. Daca alocare nu
+se reuseste, se afiseaza un mesaj de eroare, si se opreste fortat executia 
+programului cu exit(). Dupa modificare dimensiunii vectorului de matrici, se
+aloca pe ultima pozitie o matrice cu dimensiunile date. Daca alocare nu se
+reuseste, se afiseaza un mesaj de eroare si programul se opreste fortat. Se
+citeste matricea, dupa care programul va adauga in vectori valorile
+corespunzatoare, si incrementeaza variabila index, care retine care este 
+urmatorul index la care trebuie adaugata o matrice, in vector (adica indica 
+numarul de elemente ale vectorului de matrici).
+	
+	Pentru task-ul 'D', se primeste de la tastura litera D si un numar, pe care
+il compar cu 0 si cu numarul de elemnente din tablou. Daca numarul nu 
+reprezinta un index valid, afisez mesajul de eroare, iar in caz contrar afisez
+valorile corespunzatoare index-ului din vectorii row si coll, care retin 
+numarul de linii si numarul de coloane al tuturor matricilor.
+	
+	Pentru task-ul 'P', se primeste de de la tastatura litera P si un numar, pe
+care il compar cu 0 si numarul de elemente din tablou, la fel ca la task-ul D.
+Verific daca numarul introdus este un index valid. Daca este afisez matricea
+folosindu-ma de informatiile retiunte in vectorii row si coll, iar in caz
+contrar afisez mesaj de eroare.
+	
+	Pentru task-ul 'T', se primeste de la tastatura litera T si un numar, pe
+care il compar cu 0 si cu numarul de elemente din tablou. Daca numarul nu 
+corespunde niciunui index, se afiseaza mesaj de eroare. In caz contrar, 
+calculez transpusa cu ajutorul unei matrice auxiliare si al functiei transpose,
+care este o simpla asociere algebrica de transpunere in care se schimba ordinea
+lui i si j (elementul [i][j] devine [j][i]). Se elibereaza memoria matricei
+initiale din vectorul de matrici, cu ajutorul functii free_matrix, care
+primeste ca paramterii matricea ce trebuie eliberata, si numarul ei de linii
+(deoarece matricea este alocata ca un vector de vectori, trebuie sa stim cate
+linii are). Dupa aceasta eliberare elementul de pe pozitia respectiva, cel ce a
+fost eliberat, va indica catre zona de memorie a matricei auxiliare, adica
+transpusa. Ultima operatie efectuata este cea a inversarii numarului de linii
+cu cel al liniei de coloane.
+	
+	Pentru task-ul 'M', se primeste de la tastatura litera M si doua numere, pe
+care le verific mai intai sa existe matricile cu indecsi respectivi in vectorul
+de matrici, iar mai apoi daca inmultirea poate fi efectuata (adica numarul de 
+coloane al primei sa fie egal cu numarul de coloane al celei de-a doua.).
+Aceste verificari se fac prin intermediul functiei mult_ok, care va intoarce
+valoarea 1 daca inmultirea poate fi efectuata. Daca s-a trecut de aceasta
+verificare, vectorul de matrici este redimensionat astfel in cat la final sa
+poate fi pus rezultatul inmultirii, dupa care se pune la final matricea
+returnata de functia alg_multiply, functie care inmulteste doua matrici prin
+algoritmul simplu, cunoscut de la algebra, in care se ia fiecare linie din 
+prima si "se inmulteste" (este de fapt o suma) cu fiecare coloana din a doua.
+Pentru cerinta de a evita overflow-ul a problemei am declarat un macro 
+OVERFLOW, pe care il folosesc la toate operatiile la care este nevoie.
+La fel ca la citirea unei noi matrici, redimensionez vectorii row, coll, si sum
+si adaug valorile corespunzatoare pe ultima pozitie, dupa care cresc valoarea
+index-ului din main. Atat pentru inmultire, cat si pentru algoritmul lui
+strassen se apeleaza in main aceeasi functie, care are ca ultim parametru un
+char, reprezentand modul in care vreau sa inmultesc, M, pentru inmultire, S
+pentru Strassen. Parametrii acestei functie au cate o * in plus deoarece in
+main pasez ca argument adresa vectorilor.
+
+	Pentru task-ul 'C', se primeste de la tastatura litera C si un numar. Se
+verifica mai intai daca numarul dat este un index valid, la fel ca la 
+task-urile P, D, sau T. Daca nu este valid se citeste un input fals, care nu
+va afea niciun efect. Daca este valid, se citest un input adevarat de data
+aceasta, mai intai doua numere l (de la linie), si c (de la coloana), care vor
+fi pasate ca argumente pentru functia cut_matrix. Functia cut_matrix are ca
+parametrii matricea ce trebuie redimensionata, numarul de linii dupa care se
+face redimensionare, si numarul de coloane dupa care se face redimensionarea.
+In functie se aloca dinamic mai intai un vector ce contine indecsii liniilor 
+dupa care se face redimensionarea, se citesc l elemente in acest vector, dupa
+care se procedeaza identic si pentru coloane. Se aloca matricea care va fi
+rezultatul redimensionarii, de dimensiune l * c, si se parcurge pentru fiecare
+element din vectorul de linii, fiecare element din vectorul de coloane, si se
+salveaza in matricea rezultat pe pozitia [i][j] ce se gaseste in matricea a, 
+astfel incat : linia lui a pentru asociere este egala cu ce se gaseste in 
+vectorul de linii la pozitia i, iar coloana lui a pentru asociere este egala cu
+ce se gaseste in vectorul de coloane la pozitia j. Dupa ce toate asocierile au
+fost facute se elibereaza vectorii pentru linii si coloane si functia intoarce
+matricea redimensionata. La fel ca la transpusa, se elibereaza memoria alocata
+matricei ce a fost redimensionata (nimic nu s-a modificat la ea in acest 
+proces), si elementul de pe pozitia care a fost eliberata va indica la adresa
+matricei auxiliare, care reprezinta chiar matricea redimensionata. Se pun la
+pozitiile corespunzatoare in vectorii row, coll si sum, "informatiile" despre
+noua matrice, cea redimensionata.
+	
+	Pentru task-ul 'R', se primeste de la tastatura litera R si doua numere.
+Se verifica mai intai daca primul numarul corespunde unui index. Daca trece
+acest test, se verifica daca al doilea numar nu este negativ. Daca trece si
+acest test, se verifica daca matricea este patratica. Pentru aceasta ridicare
+la putere am creat o noua functie de inmultire, diferita de cea de la task-ul
+'M' deoarece am nevoie ca intr-una dintre matricile date ca paramterii sa se
+salveze rezultatul, fara a mai aloca in memoria una noua. Aceasta functioneaza
+doar pentru matrici patratice. Functia raise intoarce matricea ridica la
+putere. Aceasta ridicare la putere se face prin metoda "exponentiation by
+squaring". Consider doua matrici, matricea rezultat, si una auxiliara.
+Rezultatul este initial matricea identitate, astfel incat daca puterea este 0,
+functia va returna ceea ce trebuie. Matricea auxiliara este intial egal
+cu matricea ce trebuie ridicata la putere. Se calculeaza de fiecare data in
+while aux^2, aux^4, aux^8, aux^16 si asa mai departe, in timp ce puterea se
+imparte la 2, iar daca puterea a ajuns sa fie un numar impar, trebuie sa salvam
+in matricea a, pe aux inainte de ridicare din nou la patrat, deoarece
+aux^n = aux * aux ^ ((n - 1) / 2). Cazul din if in care puterea este para, va
+fi apelat cel putin odata, la final, caz in care puterea este putere a lui 2,
+si de aceeas nu mai trebuie sa inmultim la final result cu aux. Deoarece
+dimensiunile matricei nu se modifica, se copiaza elementele din matricea
+ridicata la putere, in matricea initiala, si se updateaza suma, si se dealoca,
+desigur, matricea auxiliara.
+	
+	Pentru task-ul 'F', se primeste de la tastatura litera F si un numar. Cu
+ajutorul functiei free_ok se verifica daca numarul dat este un index valid. Am
+impartit aceasta problema in 2 cazuri. in cazul in care in vectorul de matrici
+exista mai mult de un element, se genereaza un vector auxiliar de matrici, de 
+dimensiune cu 1 mai mic, in care s-au copiat in aceeasi ordine, toate matricile
+din vectorul initial, fara matricea care trebuie eliminata. Se elibereaza
+vectorul de matrici, cu tot cu matricile din el (deoarece si matricile au fost 
+copiate in vectorul auxiliar), dupa care pointerul mat_arr va indica catre
+adresa vectorului auxiliar. Se procedeaza asemanator si pentru vectorii ce
+retin informatiile despre matrici. Se scade index-ul, care tine contul a cate
+matrici sunt in vector, adica ce dimensiune are vectorul, pentru ca la
+urmatoarea operatie la care este nevoie de resize, totul sa fie in regula.
+In cazul in care exista o singura matrice in vector, se elibereaza aceea
+matrice si informatiile despre ea din vectori, cat si vectori.Index-ul devine
+0. Astfel la urmatorul task de tip L, programul se va comporta ca la prima
+citire.
+	
+	Pentru task-ul 'O', se primeste de la tastatura litera O si este apelata
+functia do_sort_array. Aceasta sorteaza vectorul sum, care retinea suma tuturor
+elementelor, si de cate ori face o interschimbare, o face in toti vectorii,
+atat in mat_arr, cat si in row si coll. Astfel nu se pierd informatiile despre
+matrici nici la sortare.
+	
+	Penru task-ul 'Q', se ve iesi din switch, iar apoi se va iesi si din
+do{}while, dupa care se apeleaza functia free_all. Daca nu s-a citit nicio
+matrice sau s-au sters toate cu comanda F, aceasta functie va elibera doar
+vectorul de matrici, singurul care ramane alocat cu cel putin un element, 
+indiferent de situatie. Altfel, se parcurge vectorul de matrici, se elibereaza
+toate matricile, iar apoi se elibereaza vectorii row, coll si sum.
+	
+	In cazul in care caracterul introdus nu corespune niciunui task, cazul
+default al switchului va afisa eroarea corespunzatoare.
+
+	Pentru task-ul 'S', am implementat pas cu pas algoritmul matematic a lui
+Strassen. Fiind apelata aceeasi functie ca la inmultirea normala se fac
+aceleasi verificari (daca nu ar fi fost garantat de teste ca matricile sunt de
+dimensiune 2^n * 2^n ar mai fi trebuit facuta o verificare). Functia strassen
+aloca prima data o matrice de n * n, reprezentand rezultatul inmultirii. Se
+verifica cazul de baza in care matricea este un numar si intoarcem  acel numar.
+Daca n != 1, se trece mai departe, si se impart matricea a in 4 matrici, si
+matricea b in alte 4, cu ajutorul functiei divide. Functia divide apeleaza
+functia split, care functioneaza ca un selector. Prin parametrul mat_idx, se
+selecteaza linia de unde se incepe copierea, linia unde se termina copierea,
+coloana unde se incepe copierea, si coloana unde se termina, dupa care se
+copiaza in matricea mai mica zona respectiva aleasa. Aceste a-uri si b-uri
+le-am folosit mai departe pentru a calcula componentele am si bm pentru fiecare
+m (componenta am reprezinta partea alcatuita din adunarea sau scaderea
+matricilor provenite din a, care contribuie la aflarea lui m, iar bm analog
+pentru b). Spre exemplu ma refer la am1 ca fiind egal cu a11 plus a22, deoarece
+acest termen contribuie la m (a11 + a22). Dupa ce am calculat toate aceste
+auxiliare, eliberez toate a-urile si b-urile mici, si calculez m-urile
+recursiv, tot prin straseen. Dupa ce am calculat m-urile, fac adunarile si
+scaderile necesare, astfel incat sa obtin, c11, c12, c21, c22, sferturile de
+matrici ce vor alcatui matricea rezultat. Dupa ce am calculat c-urile le lipesc
+in matricea mare, c, cu functia paste, care apeleaza unsplit de 4 ori, pentru
+toate cele 4 matrici, functie care functioneaza asemanator lui split. De data
+aceasta se selecteaza de unde incep si unde ma opresc cu lipirea unei matrici.
